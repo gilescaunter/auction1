@@ -1,5 +1,5 @@
-from rest_api_demo.database import db
-from rest_api_demo.database.models import Bid, Vehicle
+from auction_demo.database import db
+from auction_demo.database.models import Bid, Vehicle
 
 
 def create_auction_bid(data):

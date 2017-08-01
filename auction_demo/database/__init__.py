@@ -4,6 +4,6 @@ db = SQLAlchemy()
 
 
 def reset_database():
-    from rest_api_demo.database.models import Post, Vehicles  # noqa
+    from auction_demo.database.models import Post, Vehicles  # noqa
     db.drop_all()
     db.create_all()

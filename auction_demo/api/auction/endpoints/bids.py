@@ -1,10 +1,10 @@
 from flask import request
 from flask_restplus import Resource
-from rest_api_demo.api.auction.business import create_bid_post, update_bid, delete_bid
-from rest_api_demo.api.auction.serializers import auction_bid, page_of_vehicle_bids
-from rest_api_demo.api.auction.parsers import pagination_arguments
-from rest_api_demo.api.restplus import api
-from rest_api_demo.database.models import Post
+from auction_demo.api.auction.business import create_bid_post, update_bid, delete_bid
+from auction_demo.api.auction.serializers import auction_bid, page_of_vehicle_bids
+from auction_demo.api.auction.parsers import pagination_arguments
+from auction_demo.api.restplus import api
+from auction_demo.database.models import Post
 
 ns = api.namespace('auction/bids', description='Operations related to auction bids')
 

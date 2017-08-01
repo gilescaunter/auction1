@@ -1,5 +1,5 @@
 from flask_restplus import fields
-from rest_api_demo.api.restplus import api
+from auction_demo.api.restplus import api
 
 auction_bid = api.model('Auction bid', {
     'id': fields.Integer(readOnly=True, description='The unique identifier of an auction bid'),

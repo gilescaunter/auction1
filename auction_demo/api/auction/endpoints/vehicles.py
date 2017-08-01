@@ -1,9 +1,9 @@
 from flask import request
 from flask_restplus import Resource
-from rest_api_demo.api.auction.business import create_vehicle, delete_vehicle, update_vehicle
-from rest_api_demo.api.auction.serializers import vehicle, vehicle_with_posts
-from rest_api_demo.api.restplus import api
-from rest_api_demo.database.models import Vehicle
+from auction_demo.api.auction.business import create_vehicle, delete_vehicle, update_vehicle
+from auction_demo.api.auction.serializers import vehicle, vehicle_with_posts
+from auction_demo.api.restplus import api
+from auction_demo.database.models import Vehicle
 
 ns = api.namespace('auction/vehicles', description='Operations related to auction vehicles')
 #category = vehicles

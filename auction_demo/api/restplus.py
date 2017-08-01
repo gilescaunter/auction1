@@ -3,7 +3,7 @@ import traceback
 from flask_restplus import Api
 from sqlalchemy.orm.exc import NoResultFound
 
-from rest_api_demo import settings
+from auction_demo import settings
 
 api = Api(version='0.1', title='My Auction Test Mock API',
           description='Simple Auction Mock using ideas from web')

@@ -4,7 +4,7 @@
 
 from datetime import datetime
 
-from rest_api_demo.database import db
+from auction_demo.database import db
 
 
 class Bid(db.Model):

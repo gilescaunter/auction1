@@ -2,11 +2,11 @@ import logging.config
 
 from flask import Flask, Blueprint
 
-from rest_api_demo import settings
-from rest_api_demo.api.auction.endpoints.vehicles import ns as auction_vehicles_namespace
-from rest_api_demo.api.auction.endpoints.bids import ns as auction_bids_namespace
-from rest_api_demo.api.restplus import api
-from rest_api_demo.database import db
+from auction_demo import settings
+from auction_demo.api.auction.endpoints.vehicles import ns as auction_vehicles_namespace
+from auction_demo.api.auction.endpoints.bids import ns as auction_bids_namespace
+from auction_demo.api.restplus import api
+from auction_demo.database import db
 
 app = Flask(__name__)
 
