@@ -1,10 +1,10 @@
 from flask import request
 from flask_restplus import Resource
-from auction_demo.api.auction.business import create_bid_post, update_bid, delete_bid
+from auction_demo.api.auction.business import create_auction_bid, update_bid, delete_bid
 from auction_demo.api.auction.serializers import auction_bid, page_of_vehicle_bids
 from auction_demo.api.auction.parsers import pagination_arguments
 from auction_demo.api.restplus import api
-from auction_demo.database.models import Post
+from auction_demo.database.models import Bid
 
 ns = api.namespace('auction/bids', description='Operations related to auction bids')
 
@@ -22,7 +22,7 @@ class BidsCollection(Resource):
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
 
-        bids_query = Bids.query
+        bids_query = Bid.query
         bids_page = bids_query.paginate(page, per_page, error_out=False)
 
         return bids_page
@@ -32,7 +32,7 @@ class BidsCollection(Resource):
         """
         Creates a new vehicle bid.
         """
-        create_vehicle_bid(request.json)
+        create_auction_bid(request.json)
         return None, 201
 
 
@@ -40,14 +40,14 @@ class BidsCollection(Resource):
 @api.response(404, 'Post not found.')
 class PostItem(Resource):
 
-    @api.marshal_with(vehicle_bid)
+    @api.marshal_with(auction_bid)
     def get(self, id):
         """
         Returns a vehciel bid.
         """
         return Bid.query.filter(Bid.id == id).one()
 
-    @api.expect(vehicle_bid)
+    @api.expect(auction_bid)
     @api.response(204, 'Post successfully updated.')
     def put(self, id):
         """
@@ -62,7 +62,7 @@ class PostItem(Resource):
         """
         Deletes vehicle bid.
         """
-        delete_post(id)
+        delete_bid(id)
         return None, 204
 
 
@@ -87,7 +87,7 @@ class BidsArchiveCollection(Resource):
         end_day = day + 1 if day else 31
         start_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, start_month, start_day)
         end_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, end_month, end_day)
-        bids_query = Bids.query.filter(Bid.pub_date >= start_date).filter(Bid.pub_date <= end_date)
+        bids_query = Bid.query.filter(Bid.pub_date >= start_date).filter(Bid.pub_date <= end_date)
 
         bids_page = bids_query.paginate(page, per_page, error_out=False)
 

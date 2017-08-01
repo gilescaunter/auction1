@@ -1,5 +1,5 @@
 import logging.config
-
+#test com
 from flask import Flask, Blueprint
 
 from auction_demo import settings
