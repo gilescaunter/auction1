@@ -1,42 +1,38 @@
-import logging
-
 from flask import request
 from flask_restplus import Resource
-from rest_api_demo.api.blog.business import create_blog_post, update_post, delete_post
-from rest_api_demo.api.blog.serializers import blog_post, page_of_blog_posts
-from rest_api_demo.api.blog.parsers import pagination_arguments
+from rest_api_demo.api.auction.business import create_bid_post, update_bid, delete_bid
+from rest_api_demo.api.auction.serializers import auction_bid, page_of_vehicle_bids
+from rest_api_demo.api.auction.parsers import pagination_arguments
 from rest_api_demo.api.restplus import api
 from rest_api_demo.database.models import Post
 
-log = logging.getLogger(__name__)
-
-ns = api.namespace('blog/posts', description='Operations related to blog posts')
+ns = api.namespace('auction/bids', description='Operations related to auction bids')
 
 
 @ns.route('/')
-class PostsCollection(Resource):
+class BidsCollection(Resource):
 
     @api.expect(pagination_arguments)
-    @api.marshal_with(page_of_blog_posts)
+    @api.marshal_with(page_of_vehicle_bids)
     def get(self):
         """
-        Returns list of blog posts.
+        Returns list of vehicle bids.
         """
         args = pagination_arguments.parse_args(request)
         page = args.get('page', 1)
         per_page = args.get('per_page', 10)
 
-        posts_query = Post.query
-        posts_page = posts_query.paginate(page, per_page, error_out=False)
+        bids_query = Bids.query
+        bids_page = bids_query.paginate(page, per_page, error_out=False)
 
-        return posts_page
+        return bids_page
 
-    @api.expect(blog_post)
+    @api.expect(auction_bid)
     def post(self):
         """
-        Creates a new blog post.
+        Creates a new vehicle bid.
         """
-        create_blog_post(request.json)
+        create_vehicle_bid(request.json)
         return None, 201
 
 
@@ -44,27 +40,27 @@ class PostsCollection(Resource):
 @api.response(404, 'Post not found.')
 class PostItem(Resource):
 
-    @api.marshal_with(blog_post)
+    @api.marshal_with(vehicle_bid)
     def get(self, id):
         """
-        Returns a blog post.
+        Returns a vehciel bid.
         """
-        return Post.query.filter(Post.id == id).one()
+        return Bid.query.filter(Bid.id == id).one()
 
-    @api.expect(blog_post)
+    @api.expect(vehicle_bid)
     @api.response(204, 'Post successfully updated.')
     def put(self, id):
         """
-        Updates a blog post.
+        Updates a vehicle bid.
         """
         data = request.json
-        update_post(id, data)
+        update_bid(id, data)
         return None, 204
 
-    @api.response(204, 'Post successfully deleted.')
+    @api.response(204, 'Bid successfully deleted.')
     def delete(self, id):
         """
-        Deletes blog post.
+        Deletes vehicle bid.
         """
         delete_post(id)
         return None, 204
@@ -73,10 +69,10 @@ class PostItem(Resource):
 @ns.route('/archive/<int:year>/')
 @ns.route('/archive/<int:year>/<int:month>/')
 @ns.route('/archive/<int:year>/<int:month>/<int:day>/')
-class PostsArchiveCollection(Resource):
+class BidsArchiveCollection(Resource):
 
     @api.expect(pagination_arguments, validate=True)
-    @api.marshal_with(page_of_blog_posts)
+    @api.marshal_with(page_of_vehicle_bids)
     def get(self, year, month=None, day=None):
         """
         Returns list of blog posts from a specified time period.
@@ -91,8 +87,8 @@ class PostsArchiveCollection(Resource):
         end_day = day + 1 if day else 31
         start_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, start_month, start_day)
         end_date = '{0:04d}-{1:02d}-{2:02d}'.format(year, end_month, end_day)
-        posts_query = Post.query.filter(Post.pub_date >= start_date).filter(Post.pub_date <= end_date)
+        bids_query = Bids.query.filter(Bid.pub_date >= start_date).filter(Bid.pub_date <= end_date)
 
-        posts_page = posts_query.paginate(page, per_page, error_out=False)
+        bids_page = bids_query.paginate(page, per_page, error_out=False)
 
-        return posts_page
+        return bids_page

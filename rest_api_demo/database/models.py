@@ -7,28 +7,28 @@ from datetime import datetime
 from rest_api_demo.database import db
 
 
-class Post(db.Model):
+class Bid(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
     body = db.Column(db.Text)
     pub_date = db.Column(db.DateTime)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    category = db.relationship('Category', backref=db.backref('posts', lazy='dynamic'))
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'))
+    vehicle = db.relationship('Vehicle', backref=db.backref('bids', lazy='dynamic'))
 
-    def __init__(self, title, body, category, pub_date=None):
+    def __init__(self, title, body, vehicle, pub_date=None):
         self.title = title
         self.body = body
         if pub_date is None:
             pub_date = datetime.utcnow()
         self.pub_date = pub_date
-        self.category = category
+        self.vehicle = vehicle
 
     def __repr__(self):
-        return '<Post %r>' % self.title
+        return '<Bid %r>' % self.title
 
 
-class Category(db.Model):
+class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
 
@@ -36,4 +36,4 @@ class Category(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<Category %r>' % self.name
+        return '<Vehicle %r>' % self.name

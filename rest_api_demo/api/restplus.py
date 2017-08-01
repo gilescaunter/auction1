@@ -1,4 +1,3 @@
-import logging
 import traceback
 
 from flask_restplus import Api
@@ -6,10 +5,8 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from rest_api_demo import settings
 
-log = logging.getLogger(__name__)
-
-api = Api(version='1.0', title='My Blog API',
-          description='A simple demonstration of a Flask RestPlus powered API')
+api = Api(version='0.1', title='My Auction Test Mock API',
+          description='Simple Auction Mock using ideas from web')
 
 
 @api.errorhandler

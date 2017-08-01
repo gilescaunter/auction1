@@ -3,15 +3,12 @@ import logging.config
 from flask import Flask, Blueprint
 
 from rest_api_demo import settings
-from rest_api_demo.api.blog.endpoints.categories import ns as blog_categories_namespace
-from rest_api_demo.api.blog.endpoints.posts import ns as blog_posts_namespace
+from rest_api_demo.api.auction.endpoints.vehicles import ns as auction_vehicles_namespace
+from rest_api_demo.api.auction.endpoints.bids import ns as auction_bids_namespace
 from rest_api_demo.api.restplus import api
 from rest_api_demo.database import db
 
 app = Flask(__name__)
-# logging.config.fileConfig('logging.conf')
-# log = logging.getLogger(__name__)
-
 
 def configure_app(flask_app):
     flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
@@ -28,8 +25,8 @@ def initialize_app(flask_app):
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
-    api.add_namespace(blog_posts_namespace)
-    api.add_namespace(blog_categories_namespace)
+    api.add_namespace(auction_bids_namespace)
+    api.add_namespace(auction_vehicles_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
@@ -37,7 +34,6 @@ def initialize_app(flask_app):
 
 def main():
     initialize_app(app)
-    #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
     app.run(debug=settings.FLASK_DEBUG)
 
 if __name__ == "__main__":
