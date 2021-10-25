@@ -1,5 +1,3 @@
-from flask import Flask, render_template, request
-
 from auction_demo import settings
 
 app = Flask(__name__)
