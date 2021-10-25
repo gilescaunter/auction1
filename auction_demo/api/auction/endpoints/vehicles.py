@@ -6,8 +6,6 @@ from auction_demo.api.restplus import api
 from auction_demo.database.models import Vehicle
 
 ns = api.namespace('auction/vehicles', description='Operations related to auction vehicles')
-#category = vehicles
-#posts = bids
 
 @ns.route('/')
 class VehicleCollection(Resource):

@@ -1,12 +1,6 @@
-import logging.config
-#test co1
-from flask import Flask, Blueprint
+from flask import Flask, render_template, request
 
 from auction_demo import settings
-from auction_demo.api.auction.endpoints.vehicles import ns as auction_vehicles_namespace
-from auction_demo.api.auction.endpoints.bids import ns as auction_bids_namespace
-from auction_demo.api.restplus import api
-from auction_demo.database import db
 
 app = Flask(__name__)
 
@@ -19,22 +13,41 @@ def configure_app(flask_app):
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTPLUS_MASK_SWAGGER
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
-
-def initialize_app(flask_app):
-    configure_app(flask_app)
-
-    blueprint = Blueprint('api', __name__, url_prefix='/api')
-    api.init_app(blueprint)
-    api.add_namespace(auction_bids_namespace)
-    api.add_namespace(auction_vehicles_namespace)
-    flask_app.register_blueprint(blueprint)
-
-    db.init_app(flask_app)
-
-
 def main():
     initialize_app(app)
     app.run(debug=settings.FLASK_DEBUG)
 
-if __name__ == "__main__":
-    main()
+@app.route('/')
+def index():
+   return render_template('index.html')
+
+@app.route('/bidder')
+def bidder():
+   return render_template('bidder.html')
+
+@app.route('/bids',methods = ['POST', 'GET'])
+def result():
+   if request.method == 'POST':
+      result = request.form
+      return render_template("bids.html",result = result)
+
+
+@app.route('/setcookie', methods=['POST', 'GET'])
+def setcookie():
+    if request.method == 'POST':
+        user = request.form['nm']
+
+    resp = make_response(render_template('readcookie.html'))
+    resp.set_cookie('userID', user)
+
+    return resp
+
+@app.route('/getcookie')
+def getcookie():
+   name = request.cookies.get('userID')
+   return '<h1>welcome '+name+'</h1>'
+
+
+
+if __name__ == '__main__':
+   app.run(debug = True)
